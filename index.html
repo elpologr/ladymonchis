@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lluvia de Invierno - Repostería Artesanal</title>
+    <style>
+        /* --- ESTILOS GENERALES Y COLORES CÁLIDOS --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfbf7;
+            color: #4a3b32;
+        }
+
+        /* --- BANNER COLLAGE 4 FOTOS --- */
+        .banner-catalogo {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            width: 100%;
+            height: 420px;
+            overflow: hidden;
+        }
+
+        .banner-slot {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .banner-slot:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .banner-catalogo {
+                grid-template-columns: repeat(2, 1fr);
+                height: 260px;
+            }
+        }
+
+        /* --- NOMBRE DEBAJO DEL BANNER --- */
+        .nombre-negocio {
+            text-align: center;
+            padding: 32px 20px 10px 20px;
+            background: #fdfbf7;
+        }
+
+        .nombre-negocio h1 {
+            margin: 0 0 8px 0;
+            font-size: 42px;
+            font-family: 'Georgia', serif;
+            color: #4a3b32;
+            letter-spacing: 2px;
+        }
+
+        .nombre-negocio p {
+            margin: 0;
+            font-size: 18px;
+            color: #8c7a6b;
+            font-style: italic;
+        }
+
+        /* --- SECCIÓN DE FILTROS --- */
+        .contenedor-filtros {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .btn-filtro {
+            background: #fff;
+            border: 2px solid #dcd1c4;
+            color: #6d5847;
+            padding: 16px 32px;
+            margin: 8px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-filtro:hover, .btn-filtro.activo {
+            background: #8d5b4c;
+            color: #fff;
+            border-color: #8d5b4c;
+            box-shadow: 0 3px 10px rgba(141, 91, 76, 0.2);
+        }
+
+        /* --- GRILLA DE PRODUCTOS (COMPUTADORA) --- */
+        .grid-reposteria {
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 30px;
+        }
+
+        /* --- ADAPTACIÓN ESTRICTA PARA CELULARES --- */
+        @media (max-width: 768px) {
+            .grid-reposteria {
+                grid-template-columns: repeat(2, 1fr) !important; 
+                gap: 12px; 
+                padding: 0 10px;
+            }
+            
+            .info-postre {
+                padding: 12px; 
+            }
+            .titulo-postre {
+                font-size: 15px;
+            }
+            .precio-postre {
+                font-size: 16px;
+            }
+            .categoria-etiqueta {
+                font-size: 10px;
+            }
+            .btn-detalles {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+
+        /* --- CLASES AUXILIARES --- */
+        .oculto {
+            display: none !important;
+        }
+
+        .temporada-desactivada {
+            display: none !important;
+        }
+
+        /* --- TARJETA DE PRODUCTO --- */
+        .tarjeta-postre {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(141, 91, 76, 0.05);
+            border: 1px solid #f1e9db;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tarjeta-postre:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(141, 91, 76, 0.12);
+        }
+
+        .contenedor-img {
+            width: 100%;
+            height: 240px;
+            background-color: #f7f3ed;
+            position: relative;
+        }
+
+        .contenedor-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-postre {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .categoria-etiqueta {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #bfa38f;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .titulo-postre {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            font-family: 'Georgia', serif;
+            color: #4a3b32;
+        }
+
+        .descripcion-breve {
+            font-size: 13px;
+            color: #8c7a6b;
+            line-height: 1.4;
+            margin: 0 0 15px 0;
+            flex-grow: 1;
+        }
+
+        .precio-postre {
+            font-size: 20px;
+            font-weight: bold;
+            color: #8d5b4c;
+            margin-bottom: 15px;
+        }
+
+        .btn-detalles {
+            width: 100%;
+            padding: 10px;
+            background: #8d5b4c;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-detalles:hover {
+            background: #73483b;
+        }
+
+        /* --- SECCIONES ESPECIALES: OFERTAS Y MÁS VENDIDOS --- */
+        .seccion-especial {
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .seccion-titulo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .seccion-titulo h2 {
+            font-family: 'Georgia', serif;
+            font-size: 26px;
+            color: #4a3b32;
+            margin: 0;
+        }
+
+        .badge-oferta {
+            background: #e05c3a;
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-vendido {
+            background: #8d5b4c;
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .divisor-seccion {
+            border: none;
+            border-top: 2px solid #f1e9db;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+        }
+
+        .precio-tachado {
+            text-decoration: line-through;
+            color: #bfa38f;
+            font-size: 15px;
+            font-weight: normal;
+            margin-right: 6px;
+        }
+
+        .precio-oferta {
+            color: #e05c3a;
+        }
+
+        /* --- MODAL DE GALERÍA --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-overlay.abierto {
+            display: flex;
+        }
+
+        .modal-caja {
+            background: #fff;
+            border-radius: 14px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .modal-galeria {
+            width: 100%;
+            height: 280px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            box-sizing: border-box;
+            background: #f7f3ed;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+            scrollbar-color: #dcd1c4 #f7f3ed;
+        }
+
+        .modal-galeria img {
+            height: 100%;
+            width: auto;
+            min-width: 240px;
+            object-fit: cover;
+            border-radius: 8px;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+
+        .modal-contenido {
+            padding: 20px 24px 24px;
+        }
+
+        .modal-categoria {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #bfa38f;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .modal-titulo {
+            font-family: 'Georgia', serif;
+            font-size: 22px;
+            color: #4a3b32;
+            margin: 0 0 10px;
+        }
+
+        .modal-descripcion {
+            font-size: 14px;
+            color: #8c7a6b;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .modal-precio {
+            font-size: 22px;
+            font-weight: bold;
+            color: #8d5b4c;
+            margin-bottom: 4px;
+        }
+
+        .modal-cerrar {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .modal-cerrar:hover { background: rgba(0,0,0,0.75); }
+
+        @media (max-width: 768px) {
+            .seccion-especial { padding: 0 10px; }
+            .seccion-titulo h2 { font-size: 20px; }
+            .modal-galeria { height: 200px; }
+            .modal-galeria img { min-width: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== BANNER: COLLAGE 4 FOTOS ALEATORIAS ===== -->
+    <div class="banner-catalogo">
+        <div class="banner-slot" id="banner-slot-1"></div>
+        <div class="banner-slot" id="banner-slot-2"></div>
+        <div class="banner-slot" id="banner-slot-3"></div>
+        <div class="banner-slot" id="banner-slot-4"></div>
+    </div>
+
+    <!-- ===== NOMBRE DEL NEGOCIO ===== -->
+    <div class="nombre-negocio">
+        <h1>Lady Monchis</h1>
+        <p>Alta Repostería & Panadería Artesanal por la Chef Lluvia</p>
+    </div>
+
+    <!-- ===== SECCIÓN: OFERTAS ===== -->
+    <hr class="divisor-seccion">
+    <section class="seccion-especial">
+        <div class="seccion-titulo">
+            <h2>🏷️ Ofertas</h2>
+            <span class="badge-oferta">Tiempo Limitado</span>
+        </div>
+        <div class="grid-reposteria">
+
+            <!-- OFERTA 1 -->
+            <div class="tarjeta-postre"
+                 data-modal-titulo="Oferta 1"
+                 data-modal-categoria="Ofertas"
+                 data-modal-desc="Descripción del producto en oferta. Edita este texto con los detalles, ingredientes o condiciones de la promoción."
+                 data-modal-precio='<span class="precio-tachado">$000 MXN</span> <span class="precio-oferta">$000 MXN</span>'
+                 data-modal-imgs='["imagenes/oferta1-a.webp","imagenes/oferta1-b.webp"]'>
+                <div class="contenedor-img">
+                    <img src="imagenes/oferta1-a.webp" alt="Oferta 1" onerror="this.parentElement.style.background='#f7f3ed'">
+                </div>
+                <div class="info-postre">
+                    <div class="categoria-etiqueta">Oferta</div>
+                    <h3 class="titulo-postre">Nombre del Producto</h3>
+                    <p class="descripcion-breve">Descripción breve del producto en oferta.</p>
+                    <div class="precio-postre">
+                        <span class="precio-tachado">$000 MXN</span>
+                        <span class="precio-oferta">$000 MXN</span>
+                    </div>
+                    <button class="btn-detalles btn-modal">Ver detalles</button>
+                </div>
+            </div>
+
+            <!-- OFERTA 2 -->
+            <div class="tarjeta-postre"
+                 data-modal-titulo="Oferta 2"
+                 data-modal-categoria="Ofertas"
+                 data-modal-desc="Descripción del producto en oferta. Edita este texto con los detalles, ingredientes o condiciones de la promoción."
+                 data-modal-precio='<span class="precio-tachado">$000 MXN</span> <span class="precio-oferta">$000 MXN</span>'
+                 data-modal-imgs='["imagenes/oferta2-a.webp","imagenes/oferta2-b.webp"]'>
+                <div class="contenedor-img">
+                    <img src="imagenes/oferta2-a.webp" alt="Oferta 2" onerror="this.parentElement.style.background='#f7f3ed'">
+                </div>
+                <div class="info-postre">
+                    <div class="categoria-etiqueta">Oferta</div>
+                    <h3 class="titulo-postre">Nombre del Producto</h3>
+                    <p class="descripcion-breve">Descripción breve del producto en oferta.</p>
+                    <div class="precio-postre">
+                        <span class="precio-tachado">$000 MXN</span>
+                        <span class="precio-oferta">$000 MXN</span>
+                    </div>
+                    <button class="btn-detalles btn-modal">Ver detalles</button>
+                </div>
+            </div>
+
+            <!-- OFERTA 3 -->
+            <div class="tarjeta-postre"
+                 data-modal-titulo="Oferta 3"
+                 data-modal-categoria="Ofertas"
+                 data-modal-desc="Descripción del producto en oferta. Edita este texto con los detalles, ingredientes o condiciones de la promoción."
+                 data-modal-precio='<span class="precio-tachado">$000 MXN</span> <span class="precio-oferta">$000 MXN</span>'
+                 data-modal-imgs='["imagenes/oferta3-a.webp","imagenes/oferta3-b.webp"]'>
+                <div class="contenedor-img">
+                    <img src="imagenes/oferta3-a.webp" alt="Oferta 3" onerror="this.parentElement.style.background='#f7f3ed'">
+                </div>
+                <div class="info-postre">
+                    <div class="categoria-etiqueta">Oferta</div>
+                    <h3 class="titulo-postre">Nombre del Producto</h3>
+                    <p class="descripcion-breve">Descripción breve del producto en oferta.</p>
+                    <div class="precio-postre">
+                        <span class="precio-tachado">$000 MXN</span>
+                        <span class="precio-oferta">$000 MXN</span>
+                    </div>
+                    <button class="btn-detalles btn-modal">Ver detalles</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== SECCIÓN: MÁS VENDIDOS ===== -->
+    <hr class="divisor-seccion">
+    <section class="seccion-especial">
+        <div class="seccion-titulo">
+            <h2>⭐ Más Vendidos</h2>
+            <span class="badge-vendido">Los Favoritos</span>
+        </div>
+        <div class="grid-reposteria">
+
+            <!-- MÁS VENDIDO 1 -->
+            <div class="tarjeta-postre"
+                 data-modal-titulo="Más Vendido 1"
+                 data-modal-categoria="Más Vendidos"
+                 data-modal-desc="Descripción del producto más vendido. Edita este texto con los detalles, ingredientes o lo que hace especial a este producto."
+                 data-modal-precio="$000 MXN"
+                 data-modal-imgs='["imagenes/vendido1-a.webp","imagenes/vendido1-b.webp"]'>
+                <div class="contenedor-img">
+                    <img src="imagenes/vendido1-a.webp" alt="Más Vendido 1" onerror="this.parentElement.style.background='#f7f3ed'">
+                </div>
+                <div class="info-postre">
+                    <div class="categoria-etiqueta">⭐ Más Vendido</div>
+                    <h3 class="titulo-postre">Nombre del Producto</h3>
+                    <p class="descripcion-breve">Descripción breve del producto favorito de tus clientes.</p>
+                    <div class="precio-postre">$000 MXN</div>
+                    <button class="btn-detalles btn-modal">Ver detalles</button>
+                </div>
+            </div>
+
+            <!-- MÁS VENDIDO 2 -->
+            <div class="tarjeta-postre"
+                 data-modal-titulo="Más Vendido 2"
+                 data-modal-categoria="Más Vendidos"
+                 data-modal-desc="Descripción del producto más vendido. Edita este texto con los detalles, ingredientes o lo que hace especial a este producto."
+                 data-modal-precio="$000 MXN"
+                 data-modal-imgs='["imagenes/vendido2-a.webp","imagenes/vendido2-b.webp"]'>
+                <div class="contenedor-img">
+                    <img src="imagenes/vendido2-a.webp" alt="Más Vendido 2" onerror="this.parentElement.style.background='#f7f3ed'">
+                </div>
+                <div class="info-postre">
+                    <div class="categoria-etiqueta">⭐ Más Vendido</div>
+                    <h3 class="titulo-postre">Nombre del Producto</h3>
+                    <p class="descripcion-breve">Descripción breve del producto favorito de tus clientes.</p>
+                    <div class="precio-postre">$000 MXN</div>
+                    <button class="btn-detalles btn-modal">Ver detalles</button>
+                </div>
+            </div>
+
+            <!-- MÁS VENDIDO 3 -->
+            <div class="tarjeta-postre"
+                 data-modal-titulo="Más Vendido 3"
+                 data-modal-categoria="Más Vendidos"
+                 data-modal-desc="Descripción del producto más vendido. Edita este texto con los detalles, ingredientes o lo que hace especial a este producto."
+                 data-modal-precio="$000 MXN"
+                 data-modal-imgs='["imagenes/vendido3-a.webp","imagenes/vendido3-b.webp"]'>
+                <div class="contenedor-img">
+                    <img src="imagenes/vendido3-a.webp" alt="Más Vendido 3" onerror="this.parentElement.style.background='#f7f3ed'">
+                </div>
+                <div class="info-postre">
+                    <div class="categoria-etiqueta">⭐ Más Vendido</div>
+                    <h3 class="titulo-postre">Nombre del Producto</h3>
+                    <p class="descripcion-breve">Descripción breve del producto favorito de tus clientes.</p>
+                    <div class="precio-postre">$000 MXN</div>
+                    <button class="btn-detalles btn-modal">Ver detalles</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== MODAL DE GALERÍA ===== -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-caja">
+            <button class="modal-cerrar" id="modal-cerrar">&#x2715;</button>
+            <div class="modal-galeria" id="modal-galeria"></div>
+            <div class="modal-contenido">
+                <div class="modal-categoria" id="modal-categoria"></div>
+                <h2 class="modal-titulo" id="modal-titulo"></h2>
+                <p class="modal-descripcion" id="modal-descripcion"></p>
+                <div class="modal-precio" id="modal-precio"></div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divisor-seccion">
+    <div class="contenedor-filtros" id="filtro-reposteria">
+        <button class="btn-filtro activo" data-categoria="todos">Todo el Menú</button>
+        <button class="btn-filtro" data-categoria="pasteles">Pasteles</button>
+        <button class="btn-filtro" data-categoria="panaderia">Pan Dulce</button>
+        <button class="btn-filtro" data-categoria="individuales">Postres Individuales</button>
+    </div>
+
+    <div class="grid-reposteria" id="grid-menu">
+
+        <div class="tarjeta-postre" data-categoria="pay">
+            <div class="contenedor-img">
+                <img src="imagenes/pay-de-limon-estilo-New-York-con-crema-de-limon.webp" alt="pay new york">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">pay</div>
+                <h3 class="titulo-postre">Pay de Limon Estilo New York con Crema de Limon</h3>
+                <p class="descripcion-breve">Pay de Limon Artesanal estilo New York, con Crema de Limon y Grosellas</p>
+                <div class="precio-postre">$200 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="pan">
+            <div class="contenedor-img">
+                <img src="imagenes/bollitos-1.webp" alt="pan">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Pan</div>
+                <h3 class="titulo-postre">Bollitos</h3>
+                <p class="descripcion-breve">Bollitos Salados Artesanales horneados a la perfeccion para acompañar tus comidas o eventos.</p>
+                <div class="precio-postre">$35 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="pay">
+            <div class="contenedor-img">
+                <img src="imagenes/pay-de-queso-con-grosellas-1.webp" alt="Tartaleta">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">pay</div>
+                <h3 class="titulo-postre">Pay de Queso con Grosellas</h3>
+                <p class="descripcion-breve">Pay de queso Artesanal con Grosellas.</p>
+                <div class="precio-postre">$200 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="postres salados">
+            <div class="contenedor-img">
+                <img src="imagenes/roles-de-pepperoni-con-queso-cheddar-y-salsa-para-pizza-1.webp" alt="Pastel de Zanahoria">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">postres salados</div>
+                <h3 class="titulo-postre">Roles de Pepperoni con Queso Cheddar y Salsa para Pizza</h3>
+                <p class="descripcion-breve">Roles de pepperoni con queso cheddar y salsa para pizza.</p>
+                <div class="precio-postre">$65 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="pasteles">
+            <div class="contenedor-img">
+                <img src="imagenes/pan-pizza-1.webp" alt="Cheesecake">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">pan condimentado</div>
+                <h3 class="titulo-postre">Pan condimentado tipo Pizza</h3>
+                <p class="descripcion-breve">Textura crujiente y deliciosa, condimentada al estilo de una pizza.</p>
+                <div class="precio-postre">$420 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="pasteles">
+            <div class="contenedor-img">
+                <img src="imagenes/tres-leches.webp" alt="Pastel Tres Leches">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Pasteles</div>
+                <h3 class="titulo-postre">Tres Leches Vainilla-Cajeta</h3>
+                <p class="descripcion-breve">Bizcocho tradicional perfectamente humectado con nuestra receta secreta de tres leches, hilos de cajeta quemada y nuez.</p>
+                <div class="precio-postre">$360 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="pasteles">
+            <div class="contenedor-img">
+                <img src="imagenes/red-velvet.webp" alt="Pastel Red Velvet">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Pasteles</div>
+                <h3 class="titulo-postre">Red Velvet Clásico</h3>
+                <p class="descripcion-breve">Bizcocho aterciopelado con un sutil toque de cocoa orgánica, intercalado con capas sedosas de crema de queso premium.</p>
+                <div class="precio-postre">$400 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="panaderia">
+            <div class="contenedor-img">
+                <img src="imagenes/concha-vainilla.webp" alt="Concha Artesanal">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Pan Dulce</div>
+                <h3 class="titulo-postre">Concha Temática de Vainilla</h3>
+                <p class="descripcion-breve">Pan de huevo tradicional de textura esponjosa con una costra crujiente de mantequilla y vainilla natural de Papantla.</p>
+                <div class="precio-postre">$25 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="panaderia">
+            <div class="contenedor-img">
+                <img src="imagenes/chocolatin.webp" alt="Chocolatín">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Pan Dulce</div>
+                <h3 class="titulo-postre">Chocolatín de Hojaldre</h3>
+                <p class="descripcion-breve">Masa de hojaldre crujiente dorada a la perfección, rellena con barras de chocolate amargo belga horneado.</p>
+                <div class="precio-postre">$38 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="panaderia">
+            <div class="contenedor-img">
+                <img src="imagenes/rol-canela.webp" alt="Rol de Canela">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Pan Dulce</div>
+                <h3 class="titulo-postre">Rol de Canela y Glaseado</h3>
+                <p class="descripcion-breve">Espiral de masa brioche suave, relleno de una mezcla aromática de canela de ceilán y azúcar mascabado, con glaseado real.</p>
+                <div class="precio-postre">$40 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="panaderia">
+            <div class="contenedor-img">
+                <img src="imagenes/muffin-arandano.webp" alt="Muffin">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Pan Dulce</div>
+                <h3 class="titulo-postre">Muffin de Arándano Orgánico</h3>
+                <p class="descripcion-breve">Panecillo suave y esponjoso repleto de arándanos azules frescos que estallan en el horneado, con un toque cítrico de limón.</p>
+                <div class="precio-postre">$30 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="individuales">
+            <div class="contenedor-img">
+                <img src="imagenes/brownie-nuez.webp" alt="Brownie">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Postres Individuales</div>
+                <h3 class="titulo-postre">Brownie Fudge con Nuez</h3>
+                <p class="descripcion-breve">Cuadro de chocolate espeso, meloso y súper húmedo por dentro, con costra crujiente y trozos de nuez pecana tostada.</p>
+                <div class="precio-postre">$35 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="individuales">
+            <div class="contenedor-img">
+                <img src="imagenes/macarons.webp" alt="Macarons">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Postres Individuales</div>
+                <h3 class="titulo-postre">Trío de Macarons Franceses</h3>
+                <p class="descripcion-breve">Delicadas galletas de merengue de almendra con texturas crujientes por fuera y suaves por dentro, rellenas de ganache frutal.</p>
+                <div class="precio-postre">$75 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="individuales">
+            <div class="contenedor-img">
+                <img src="imagenes/eclair-chocolate.webp" alt="Éclair">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Postres Individuales</div>
+                <h3 class="titulo-postre">Éclair de Crema Pastelera</h3>
+                <p class="descripcion-breve">Masa choux alargada y ligera, rellena con una sedosa crema de vainilla y cubierta con un espejo de chocolate brillante.</p>
+                <div class="precio-postre">$45 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre" data-categoria="individuales">
+            <div class="contenedor-img">
+                <img src="imagenes/tiramisu-vasito.webp" alt="Tiramisú">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Postres Individuales</div>
+                <h3 class="titulo-postre">Porción de Tiramisú Italiano</h3>
+                <p class="descripcion-breve">Capas de soletas caseras humedecidas en café espresso y licor, alternadas con una rica crema de queso mascarpone y cocoa.</p>
+                <div class="precio-postre">$65 MXN</div>
+                <button class="btn-detalles">Ver ingredientes</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Lluvia de Invierno - Diseñado por Yesos Polo Digital</p>
+    </footer>
+
+    <script>
+        // ===== BANNER: 4 IMÁGENES ALEATORIAS DEL CATÁLOGO =====
+        (function() {
+            const tarjetas = document.querySelectorAll('.tarjeta-postre');
+            const imagenes = [];
+
+            tarjetas.forEach(card => {
+                const img = card.querySelector('.contenedor-img img');
+                if (img && img.getAttribute('src')) {
+                    imagenes.push(img.getAttribute('src'));
+                }
+            });
+
+            // Mezcla aleatoria (Fisher-Yates)
+            for (let i = imagenes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [imagenes[i], imagenes[j]] = [imagenes[j], imagenes[i]];
+            }
+
+            // Llena los 4 slots
+            const slots = document.querySelectorAll('.banner-slot');
+            slots.forEach((slot, index) => {
+                const img = document.createElement('img');
+                img.src = imagenes[index % imagenes.length];
+                img.alt = 'Producto ' + (index + 1);
+                slot.appendChild(img);
+            });
+        })();
+
+        // ===== FILTROS =====
+        const botonesFiltro = document.querySelectorAll('.btn-filtro');
+        const tarjetas = document.querySelectorAll('.tarjeta-postre');
+
+        botonesFiltro.forEach(boton => {
+            boton.addEventListener('click', () => {
+                document.querySelector('.btn-filtro.activo').classList.remove('activo');
+                boton.classList.add('activo');
+
+                const categoriaSeleccionada = boton.getAttribute('data-categoria');
+
+                tarjetas.forEach(tarjeta => {
+                    const catTarjeta = tarjeta.getAttribute('data-categoria');
+
+                    if (categoriaSeleccionada === 'todos' || catTarjeta === categoriaSeleccionada) {
+                        tarjeta.classList.remove('oculto');
+                    } else {
+                        tarjeta.classList.add('oculto');
+                    }
+                });
+            });
+        });
+
+        // ===== MODAL DE GALERÍA =====
+        const overlay    = document.getElementById('modal-overlay');
+        const btnCerrar  = document.getElementById('modal-cerrar');
+        const galeria    = document.getElementById('modal-galeria');
+        const mCategoria = document.getElementById('modal-categoria');
+        const mTitulo    = document.getElementById('modal-titulo');
+        const mDesc      = document.getElementById('modal-descripcion');
+        const mPrecio    = document.getElementById('modal-precio');
+
+        document.querySelectorAll('.btn-modal').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const card = btn.closest('.tarjeta-postre');
+                const imgs = JSON.parse(card.getAttribute('data-modal-imgs') || '[]');
+
+                // Rellenar galería
+                galeria.innerHTML = '';
+                if (imgs.length === 0) {
+                    galeria.innerHTML = '<div style="width:100%;display:flex;align-items:center;justify-content:center;color:#bfa38f;font-size:13px;">Sin imágenes</div>';
+                } else {
+                    imgs.forEach(src => {
+                        const img = document.createElement('img');
+                        img.src = src;
+                        img.alt = card.getAttribute('data-modal-titulo') || '';
+                        galeria.appendChild(img);
+                    });
+                }
+                galeria.scrollLeft = 0;
+
+                // Rellenar texto
+                mCategoria.textContent = card.getAttribute('data-modal-categoria') || '';
+                mTitulo.textContent    = card.getAttribute('data-modal-titulo') || '';
+                mDesc.textContent      = card.getAttribute('data-modal-desc') || '';
+                mPrecio.innerHTML      = card.getAttribute('data-modal-precio') || '';
+
+                overlay.classList.add('abierto');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function cerrarModal() {
+            overlay.classList.remove('abierto');
+            document.body.style.overflow = '';
+        }
+
+        btnCerrar.addEventListener('click', cerrarModal);
+        overlay.addEventListener('click', e => { if (e.target === overlay) cerrarModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+    </script>
+
+</body>
+</html>
