@@ -14,36 +14,25 @@
             color: #4a3b32;
         }
 
-        /* --- BANNER COLLAGE 4 FOTOS --- */
-        .banner-catalogo {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
+        /* --- BANNER SIMPLE --- */
+        .banner-simple {
             width: 100%;
             height: 420px;
             overflow: hidden;
-        }
-
-        .banner-slot {
-            overflow: hidden;
+            background-color: #e8ddd4;
             position: relative;
         }
 
-        .banner-slot img {
+        .banner-simple img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .banner-slot:hover img {
-            transform: scale(1.05);
+            display: block;
         }
 
         @media (max-width: 768px) {
-            .banner-catalogo {
-                grid-template-columns: repeat(2, 1fr);
-                height: 260px;
+            .banner-simple {
+                height: 220px;
             }
         }
 
@@ -116,6 +105,9 @@
                 padding: 0 10px;
             }
             
+            .contenedor-img {
+                height: 200px;
+            }
             .info-postre {
                 padding: 12px; 
             }
@@ -132,6 +124,14 @@
                 padding: 8px;
                 font-size: 12px;
             }
+        }
+
+        /* --- TARJETA CLICKEABLE COMPLETA --- */
+        .tarjeta-clickeable {
+            cursor: pointer;
+        }
+        .tarjeta-clickeable:active {
+            transform: scale(0.98);
         }
 
         /* --- CLASES AUXILIARES --- */
@@ -162,7 +162,7 @@
 
         .contenedor-img {
             width: 100%;
-            height: 240px;
+            height: 320px;
             background-color: #f7f3ed;
             position: relative;
         }
@@ -403,170 +403,532 @@
             .modal-galeria { height: 200px; }
             .modal-galeria img { min-width: 180px; }
         }
+
+        /* --- SUBFILTROS DE CATÁLOGO --- */
+        #subfiltros-catalogo {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .btn-subfiltro {
+            background: #fdfbf7;
+            border: 2px solid #dcd1c4;
+            color: #6d5847;
+            padding: 10px 24px;
+            margin: 6px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-subfiltro:hover, .btn-subfiltro.activo {
+            background: #c49a82;
+            color: #fff;
+            border-color: #c49a82;
+            box-shadow: 0 3px 10px rgba(196, 154, 130, 0.25);
+        }
+
+        /* --- SECCIONES DE NAVEGACIÓN --- */
+        .seccion-nav {
+            display: none;
+        }
+        .seccion-nav.visible {
+            display: block;
+        }
+
+        /* --- AVISO PLACEHOLDER --- */
+        .aviso-vacio {
+            text-align: center;
+            padding: 60px 20px;
+            color: #bfa38f;
+            font-style: italic;
+            font-size: 16px;
+        }
+
+        /* --- MODAL DE WHATSAPP / PEDIDO --- */
+        .modal-pedido-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-pedido-overlay.abierto {
+            display: flex;
+        }
+        .modal-pedido-caja {
+            background: #fff;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            position: relative;
+        }
+        .modal-pedido-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        /* Galería con scroll horizontal para el modal de pedido */
+        .modal-pedido-galeria-wrap {
+            position: relative;
+            width: 100%;
+            background: #f7f3ed;
+        }
+        .modal-pedido-galeria {
+            width: 100%;
+            height: 440px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            display: flex;
+            gap: 0;
+            background: #f7f3ed;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .modal-pedido-galeria::-webkit-scrollbar { display: none; }
+        .modal-pedido-galeria img {
+            height: 100%;
+            width: 100%;
+            min-width: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .modal-pedido-galeria {
+                height: 340px;
+            }
+        }
+        /* Flechas de navegación */
+        .galeria-flecha {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.40);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: background 0.2s;
+            line-height: 1;
+        }
+        .galeria-flecha:hover { background: rgba(0,0,0,0.65); }
+        .galeria-flecha.prev { left: 8px; }
+        .galeria-flecha.next { right: 8px; }
+        .galeria-flecha.oculta { display: none; }
+        /* Dots indicadores */
+        .galeria-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 0 4px;
+            background: #f7f3ed;
+        }
+        .galeria-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #dcd1c4;
+            transition: background 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .galeria-dot.activo {
+            background: #8d5b4c;
+            transform: scale(1.3);
+        }
+        .modal-pedido-img-placeholder {
+            width: 100%;
+            height: 220px;
+            background: #f7f3ed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bfa38f;
+            font-size: 13px;
+        }
+        .modal-pedido-cuerpo {
+            padding: 24px;
+            text-align: center;
+        }
+        .modal-pedido-titulo {
+            font-family: 'Georgia', serif;
+            font-size: 20px;
+            color: #4a3b32;
+            margin: 0 0 8px 0;
+        }
+        .modal-pedido-texto {
+            font-size: 15px;
+            color: #8c7a6b;
+            margin: 0 0 20px 0;
+            line-height: 1.5;
+        }
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: 700;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+        }
+        .btn-whatsapp:hover {
+            background: #1ebe5d;
+            transform: translateY(-2px);
+        }
+        .btn-whatsapp svg {
+            flex-shrink: 0;
+        }
+        .modal-pedido-cerrar {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: rgba(0,0,0,0.45);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .modal-pedido-cerrar:hover { background: rgba(0,0,0,0.7); }
+
+        /* --- LAYOUT 3 COLUMNAS: lateral izq + centro + lateral der --- */
+        .zona-central {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 0;
+            align-items: start;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* COLUMNA IZQUIERDA: Menú Masa Madre */
+        .lateral-izquierdo {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .lateral-izquierdo-inner {
+            width: 160px;
+            margin: 0 auto;
+        }
+
+        .lateral-titulo {
+            font-family: 'Georgia', serif;
+            font-size: 13px;
+            font-weight: bold;
+            color: #6d5847;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .lateral-foto {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(141, 91, 76, 0.12);
+            border: 2px solid #f1e9db;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .lateral-foto:hover {
+            box-shadow: 0 6px 20px rgba(141, 91, 76, 0.22);
+            transform: translateY(-2px);
+        }
+
+        .lateral-foto img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* COLUMNA DERECHA: AdSense */
+        .lateral-derecho {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .lateral-derecho-inner {
+            width: 160px;
+            margin: 0 auto;
+        }
+
+        .adsense-placeholder {
+            width: 100%;
+            min-height: 250px;
+            background: #f7f3ed;
+            border: 2px dashed #dcd1c4;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #bfa38f;
+            font-size: 11px;
+            text-align: center;
+            padding: 12px;
+            box-sizing: border-box;
+        }
+
+        /* COLUMNA CENTRAL: nombre + filtros */
+        .zona-central-medio {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* --- HOTSPOTS MENÚ MASA MADRE --- */
+        .menu-hotspot-wrap {
+            position: relative;
+            display: inline-block;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .menu-hotspot-wrap img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 60px rgba(0,0,0,0.6);
+            display: block;
+        }
+
+        .hotspot {
+            position: absolute;
+            background: rgba(141, 91, 76, 0.08);
+            border: 1.5px solid rgba(141, 91, 76, 0.25);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .hotspot:hover {
+            background: rgba(141, 91, 76, 0.22);
+            border-color: rgba(141, 91, 76, 0.7);
+        }
+
+        /* Tooltip del hotspot */
+        .hotspot::after {
+            content: attr(title);
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(74, 59, 50, 0.92);
+            color: #fff;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+
+        .hotspot:hover::after {
+            opacity: 1;
+        }
+
+        /* Modal de imagen grande */
+        .modal-foto-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 1200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            cursor: zoom-out;
+        }
+        .modal-foto-overlay.abierto {
+            display: flex;
+        }
+        .modal-foto-overlay img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 60px rgba(0,0,0,0.6);
+        }
+        .modal-foto-cerrar {
+            position: fixed;
+            top: 16px;
+            right: 20px;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-foto-cerrar:hover { background: rgba(255,255,255,0.3); }
+
+        /* Responsive: ocultar laterales en móvil */
+        @media (max-width: 900px) {
+            .zona-central {
+                grid-template-columns: 1fr;
+            }
+            .lateral-izquierdo,
+            .lateral-derecho {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- ===== BANNER: COLLAGE 4 FOTOS ALEATORIAS ===== -->
-    <div class="banner-catalogo">
-        <div class="banner-slot" id="banner-slot-1"></div>
-        <div class="banner-slot" id="banner-slot-2"></div>
-        <div class="banner-slot" id="banner-slot-3"></div>
-        <div class="banner-slot" id="banner-slot-4"></div>
+    <!-- ===== BANNER SIMPLE ===== -->
+    <!-- Para cambiar la imagen del banner, reemplaza el src de la etiqueta img -->
+    <div class="banner-simple">
+        <img src="imagenes/banner-reposteria.webp" alt="Banner Lady Monchis">
     </div>
 
-    <!-- ===== NOMBRE DEL NEGOCIO ===== -->
-    <div class="nombre-negocio">
-        <h1>Lady Monchis</h1>
-        <p>Alta Repostería & Panadería Artesanal por la Chef Lluvia</p>
+    <!-- ===== MODAL DE FOTO AMPLIADA (MENÚ MASA MADRE) ===== -->
+    <div class="modal-foto-overlay" id="modal-foto-overlay">
+        <button class="modal-foto-cerrar" id="modal-foto-cerrar">&#x2715;</button>
+        <div class="menu-hotspot-wrap">
+            <img id="modal-foto-img" src="imagenes/menumasamadre1.webp" alt="Menú Masa Madre">
+            <!-- HOTSPOTS sobre cada producto -->
+            <!-- Básicas -->
+            <div class="hotspot" data-producto="Bolillos (6 pz)" data-precio="$65" data-img="imagenes/bolillos.webp" style="top:22.5%;left:44%;width:52%;height:4.5%;" title="Bolillos (6 pz) — $65"></div>
+            <div class="hotspot" data-producto="Baguette (4 pz)" data-precio="$120" data-img="imagenes/baguette.webp" style="top:27.2%;left:44%;width:52%;height:4.5%;" title="Baguette (4 pz) — $120"></div>
+            <div class="hotspot" data-producto="Barra semi integral" data-precio="$125 / $65" data-img="imagenes/barra-semi-integral.webp" style="top:31.8%;left:44%;width:52%;height:6%;" title="Barra semi integral — $125/$65"></div>
+            <div class="hotspot" data-producto="Barra semi integral semillas" data-precio="$160 / $80" data-img="imagenes/barra-integral-semillas.webp" style="top:38%;left:44%;width:52%;height:6%;" title="Barra semi integral semillas — $160/$80"></div>
+            <div class="hotspot" data-producto="Centeno" data-precio="$120" data-img="imagenes/centeno.webp" style="top:44.2%;left:44%;width:52%;height:4.5%;" title="Centeno — $120"></div>
+            <!-- Dulces -->
+            <div class="hotspot" data-producto="Arándanos y naranja" data-precio="$90" data-img="imagenes/arandanos-naranja.webp" style="top:52.5%;left:2%;width:42%;height:5.5%;" title="Arándanos y naranja — $90"></div>
+            <div class="hotspot" data-producto="Dátil y naranja" data-precio="$100" data-img="imagenes/datil-naranja.webp" style="top:58.2%;left:2%;width:42%;height:4.5%;" title="Dátil y naranja — $100"></div>
+            <div class="hotspot" data-producto="Dátil y cacao" data-precio="$110" data-img="imagenes/datil-cacao.webp" style="top:62.8%;left:2%;width:42%;height:4.5%;" title="Dátil y cacao — $110"></div>
+            <!-- Salados -->
+            <div class="hotspot" data-producto="Baguette cheddar y habanero morado" data-precio="$70" data-img="imagenes/baguette-cheddar.webp" style="top:74%;left:44%;width:52%;height:6%;" title="Baguette cheddar y habanero morado — $70"></div>
+            <div class="hotspot" data-producto="Baguette ajo y parmesano" data-precio="$90" data-img="imagenes/baguette-ajo.webp" style="top:80.2%;left:44%;width:52%;height:5.5%;" title="Baguette ajo y parmesano — $90"></div>
+            <div class="hotspot" data-producto="Focaccia" data-precio="$120" data-img="imagenes/focaccia.webp" style="top:86%;left:44%;width:52%;height:5%;" title="Focaccia — $120"></div>
+        </div>
     </div>
 
-    <!-- ===== SECCIÓN: OFERTAS ===== -->
-    <hr class="divisor-seccion">
-    <section class="seccion-especial">
-        <div class="seccion-titulo">
-            <h2>🏷️ Ofertas</h2>
-            <span class="badge-oferta">Tiempo Limitado</span>
+    <!-- ===== ZONA CENTRAL: 3 COLUMNAS ===== -->
+    <div class="zona-central">
+
+        <!-- COLUMNA IZQUIERDA: Menú Masa Madre -->
+        <div class="lateral-izquierdo">
+            <div class="lateral-izquierdo-inner">
+                <p class="lateral-titulo">Menú de<br>Masa Madre</p>
+                <div class="lateral-foto" id="btn-foto-menu" title="Ver en grande">
+                    <img src="imagenes/menumasamadre1.webp" alt="Menú Masa Madre">
+                </div>
+            </div>
         </div>
-        <div class="grid-reposteria">
 
-            <!-- OFERTA 1 -->
-            <div class="tarjeta-postre"
-                 data-modal-titulo="Oferta 1"
-                 data-modal-categoria="Ofertas"
-                 data-modal-desc="Descripción del producto en oferta. Edita este texto con los detalles, ingredientes o condiciones de la promoción."
-                 data-modal-precio='<span class="precio-tachado">$000 MXN</span> <span class="precio-oferta">$000 MXN</span>'
-                 data-modal-imgs='["imagenes/oferta1-a.webp","imagenes/oferta1-b.webp"]'>
-                <div class="contenedor-img">
-                    <img src="imagenes/oferta1-a.webp" alt="Oferta 1" onerror="this.parentElement.style.background='#f7f3ed'">
-                </div>
-                <div class="info-postre">
-                    <div class="categoria-etiqueta">Oferta</div>
-                    <h3 class="titulo-postre">Nombre del Producto</h3>
-                    <p class="descripcion-breve">Descripción breve del producto en oferta.</p>
-                    <div class="precio-postre">
-                        <span class="precio-tachado">$000 MXN</span>
-                        <span class="precio-oferta">$000 MXN</span>
-                    </div>
-                    <button class="btn-detalles btn-modal">Ver detalles</button>
-                </div>
+        <!-- COLUMNA CENTRAL: nombre + filtros -->
+        <div class="zona-central-medio">
+
+            <!-- ===== NOMBRE DEL NEGOCIO ===== -->
+            <div class="nombre-negocio">
+                <h1>Lady Monchis</h1>
+                <p>Alta Repostería & Panadería Artesanal por la Chef Lluvia</p>
             </div>
 
-            <!-- OFERTA 2 -->
-            <div class="tarjeta-postre"
-                 data-modal-titulo="Oferta 2"
-                 data-modal-categoria="Ofertas"
-                 data-modal-desc="Descripción del producto en oferta. Edita este texto con los detalles, ingredientes o condiciones de la promoción."
-                 data-modal-precio='<span class="precio-tachado">$000 MXN</span> <span class="precio-oferta">$000 MXN</span>'
-                 data-modal-imgs='["imagenes/oferta2-a.webp","imagenes/oferta2-b.webp"]'>
-                <div class="contenedor-img">
-                    <img src="imagenes/oferta2-a.webp" alt="Oferta 2" onerror="this.parentElement.style.background='#f7f3ed'">
-                </div>
-                <div class="info-postre">
-                    <div class="categoria-etiqueta">Oferta</div>
-                    <h3 class="titulo-postre">Nombre del Producto</h3>
-                    <p class="descripcion-breve">Descripción breve del producto en oferta.</p>
-                    <div class="precio-postre">
-                        <span class="precio-tachado">$000 MXN</span>
-                        <span class="precio-oferta">$000 MXN</span>
-                    </div>
-                    <button class="btn-detalles btn-modal">Ver detalles</button>
-                </div>
+            <!-- ===== NAVEGACIÓN PRINCIPAL: 3 BOTONES ===== -->
+            <hr class="divisor-seccion">
+            <div class="contenedor-filtros" id="nav-principal">
+                <button class="btn-filtro activo" id="btn-nav-catalogo" data-nav="catalogo">Catálogo</button>
+                <button class="btn-filtro" id="btn-nav-ofertas" data-nav="ofertas">Ofertas</button>
+                <button class="btn-filtro" id="btn-nav-vendidos" data-nav="vendidos">Más Vendidos</button>
             </div>
 
-            <!-- OFERTA 3 -->
-            <div class="tarjeta-postre"
-                 data-modal-titulo="Oferta 3"
-                 data-modal-categoria="Ofertas"
-                 data-modal-desc="Descripción del producto en oferta. Edita este texto con los detalles, ingredientes o condiciones de la promoción."
-                 data-modal-precio='<span class="precio-tachado">$000 MXN</span> <span class="precio-oferta">$000 MXN</span>'
-                 data-modal-imgs='["imagenes/oferta3-a.webp","imagenes/oferta3-b.webp"]'>
-                <div class="contenedor-img">
-                    <img src="imagenes/oferta3-a.webp" alt="Oferta 3" onerror="this.parentElement.style.background='#f7f3ed'">
-                </div>
-                <div class="info-postre">
-                    <div class="categoria-etiqueta">Oferta</div>
-                    <h3 class="titulo-postre">Nombre del Producto</h3>
-                    <p class="descripcion-breve">Descripción breve del producto en oferta.</p>
-                    <div class="precio-postre">
-                        <span class="precio-tachado">$000 MXN</span>
-                        <span class="precio-oferta">$000 MXN</span>
-                    </div>
-                    <button class="btn-detalles btn-modal">Ver detalles</button>
-                </div>
+            <!-- ===== SUBFILTROS DEL CATÁLOGO ===== -->
+            <div class="contenedor-filtros" id="subfiltros-catalogo">
+                <button class="btn-subfiltro activo" data-subcategoria="todos">Todo</button>
+                <button class="btn-subfiltro" data-subcategoria="masa-madre">Masa Madre</button>
+                <button class="btn-subfiltro" data-subcategoria="reposteria">Repostería</button>
+                <button class="btn-subfiltro" data-subcategoria="postres">Postres</button>
+                <button class="btn-subfiltro" data-subcategoria="galletas">Galletas</button>
+                <button class="btn-subfiltro" data-subcategoria="saludable">Saludable</button>
+                <button class="btn-subfiltro" data-subcategoria="salado">Salado</button>
+                <button class="btn-subfiltro" data-subcategoria="antojitos">Antojitos</button>
+                <!-- =====================================================
+                     PARA AGREGAR UNA NUEVA CATEGORÍA AL FILTRO:
+                     1. Copia una línea de botón y cambia:
+                        - data-subcategoria="nueva-categoria"
+                        - El texto visible ej: >Pasteles<
+                     EN CADA PRODUCTO puedes poner UNA o VARIAS categorías:
+                        - Una:    data-categorias="galletas"
+                        - Varias: data-categorias="galletas reposteria"
+                     (separadas por espacio, sin acentos, minúsculas)
+                ====================================================== -->
             </div>
 
+        </div><!-- fin zona-central-medio -->
+
+        <!-- COLUMNA DERECHA: Google AdSense -->
+        <div class="lateral-derecho">
+            <div class="lateral-derecho-inner">
+                <!-- Reemplaza este bloque con tu código de AdSense cuando esté listo -->
+                <div class="adsense-placeholder">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#dcd1c4" stroke-width="1.5">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <path d="M8 21h8M12 17v4"/>
+                    </svg>
+                    <span>Anuncio<br>Google AdSense</span>
+                </div>
+            </div>
         </div>
-    </section>
 
-    <!-- ===== SECCIÓN: MÁS VENDIDOS ===== -->
-    <hr class="divisor-seccion">
-    <section class="seccion-especial">
-        <div class="seccion-titulo">
-            <h2>⭐ Más Vendidos</h2>
-            <span class="badge-vendido">Los Favoritos</span>
-        </div>
-        <div class="grid-reposteria">
-
-            <!-- MÁS VENDIDO 1 -->
-            <div class="tarjeta-postre"
-                 data-modal-titulo="Más Vendido 1"
-                 data-modal-categoria="Más Vendidos"
-                 data-modal-desc="Descripción del producto más vendido. Edita este texto con los detalles, ingredientes o lo que hace especial a este producto."
-                 data-modal-precio="$000 MXN"
-                 data-modal-imgs='["imagenes/vendido1-a.webp","imagenes/vendido1-b.webp"]'>
-                <div class="contenedor-img">
-                    <img src="imagenes/vendido1-a.webp" alt="Más Vendido 1" onerror="this.parentElement.style.background='#f7f3ed'">
-                </div>
-                <div class="info-postre">
-                    <div class="categoria-etiqueta">⭐ Más Vendido</div>
-                    <h3 class="titulo-postre">Nombre del Producto</h3>
-                    <p class="descripcion-breve">Descripción breve del producto favorito de tus clientes.</p>
-                    <div class="precio-postre">$000 MXN</div>
-                    <button class="btn-detalles btn-modal">Ver detalles</button>
-                </div>
-            </div>
-
-            <!-- MÁS VENDIDO 2 -->
-            <div class="tarjeta-postre"
-                 data-modal-titulo="Más Vendido 2"
-                 data-modal-categoria="Más Vendidos"
-                 data-modal-desc="Descripción del producto más vendido. Edita este texto con los detalles, ingredientes o lo que hace especial a este producto."
-                 data-modal-precio="$000 MXN"
-                 data-modal-imgs='["imagenes/vendido2-a.webp","imagenes/vendido2-b.webp"]'>
-                <div class="contenedor-img">
-                    <img src="imagenes/vendido2-a.webp" alt="Más Vendido 2" onerror="this.parentElement.style.background='#f7f3ed'">
-                </div>
-                <div class="info-postre">
-                    <div class="categoria-etiqueta">⭐ Más Vendido</div>
-                    <h3 class="titulo-postre">Nombre del Producto</h3>
-                    <p class="descripcion-breve">Descripción breve del producto favorito de tus clientes.</p>
-                    <div class="precio-postre">$000 MXN</div>
-                    <button class="btn-detalles btn-modal">Ver detalles</button>
-                </div>
-            </div>
-
-            <!-- MÁS VENDIDO 3 -->
-            <div class="tarjeta-postre"
-                 data-modal-titulo="Más Vendido 3"
-                 data-modal-categoria="Más Vendidos"
-                 data-modal-desc="Descripción del producto más vendido. Edita este texto con los detalles, ingredientes o lo que hace especial a este producto."
-                 data-modal-precio="$000 MXN"
-                 data-modal-imgs='["imagenes/vendido3-a.webp","imagenes/vendido3-b.webp"]'>
-                <div class="contenedor-img">
-                    <img src="imagenes/vendido3-a.webp" alt="Más Vendido 3" onerror="this.parentElement.style.background='#f7f3ed'">
-                </div>
-                <div class="info-postre">
-                    <div class="categoria-etiqueta">⭐ Más Vendido</div>
-                    <h3 class="titulo-postre">Nombre del Producto</h3>
-                    <p class="descripcion-breve">Descripción breve del producto favorito de tus clientes.</p>
-                    <div class="precio-postre">$000 MXN</div>
-                    <button class="btn-detalles btn-modal">Ver detalles</button>
-                </div>
-            </div>
-
-        </div>
-    </section>
+    </div><!-- fin zona-central -->
 
     <!-- ===== MODAL DE GALERÍA ===== -->
     <div class="modal-overlay" id="modal-overlay">
@@ -582,261 +944,414 @@
         </div>
     </div>
 
-    <hr class="divisor-seccion">
-    <div class="contenedor-filtros" id="filtro-reposteria">
-        <button class="btn-filtro activo" data-categoria="todos">Todo el Menú</button>
-        <button class="btn-filtro" data-categoria="pasteles">Pasteles</button>
-        <button class="btn-filtro" data-categoria="panaderia">Pan Dulce</button>
-        <button class="btn-filtro" data-categoria="individuales">Postres Individuales</button>
-    </div>
-
-    <div class="grid-reposteria" id="grid-menu">
-
-        <div class="tarjeta-postre" data-categoria="pay">
-            <div class="contenedor-img">
-                <img src="imagenes/pay-de-limon-estilo-New-York-con-crema-de-limon.webp" alt="pay new york">
+    <!-- ===== MODAL DE PEDIDO / WHATSAPP ===== -->
+    <div class="modal-pedido-overlay" id="modal-pedido-overlay">
+        <div class="modal-pedido-caja">
+            <button class="modal-pedido-cerrar" id="modal-pedido-cerrar">&#x2715;</button>
+            <!-- Galería scrolleable con flechas y dots -->
+            <div class="modal-pedido-galeria-wrap" id="modal-pedido-galeria-wrap">
+                <button class="galeria-flecha prev oculta" id="galeria-prev">&#8249;</button>
+                <div class="modal-pedido-galeria" id="modal-pedido-galeria"></div>
+                <button class="galeria-flecha next oculta" id="galeria-next">&#8250;</button>
             </div>
-            <div class="info-postre">
-                <div class="categoria-etiqueta">pay</div>
-                <h3 class="titulo-postre">Pay de Limon Estilo New York con Crema de Limon</h3>
-                <p class="descripcion-breve">Pay de Limon Artesanal estilo New York, con Crema de Limon y Grosellas</p>
-                <div class="precio-postre">$200 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+            <div class="galeria-dots" id="galeria-dots"></div>
+            <div class="modal-pedido-cuerpo">
+                <h2 class="modal-pedido-titulo" id="modal-pedido-nombre"></h2>
+                <p class="modal-pedido-texto">
+                    ¡Nos da mucho gusto que te interese este producto!<br>
+                    Puedes contactarnos al siguiente WhatsApp:
+                </p>
+                <a class="btn-whatsapp"
+                   id="btn-wa-link"
+                   href="https://wa.me/524434949979"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    +52 443 494 9979
+                </a>
             </div>
         </div>
+    </div>
 
-        <div class="tarjeta-postre" data-categoria="pan">
+    <!-- ===== SECCIÓN: CATÁLOGO ===== -->
+    <div class="seccion-nav visible" id="seccion-catalogo">
+    <div class="grid-reposteria" id="grid-menu">
+
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="pan"
+             data-galeria="imagenes/Roggenvollkornbrot1.webp,imagenes/Roggenvollkornbrot2.webp,imagenes/Roggenvollkornbrot3.webp">
             <div class="contenedor-img">
-                <img src="imagenes/bollitos-1.webp" alt="pan">
+                <img src="imagenes/Roggenvollkornbrot1.webp" alt="Roggenvollkornbrot">
             </div>
             <div class="info-postre">
                 <div class="categoria-etiqueta">Pan</div>
-                <h3 class="titulo-postre">Bollitos</h3>
-                <p class="descripcion-breve">Bollitos Salados Artesanales horneados a la perfeccion para acompañar tus comidas o eventos.</p>
-                <div class="precio-postre">$35 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <h3 class="titulo-postre">Roggenvollkornbrot (Pan de centeno)</h3>
+                <p class="descripcion-breve">Pan de harina 100% centeno, contiene semillas de girasol, calabaza, ajonjolí blanco y ajonjolí negro. Ideal para diabéticos.</p>
+                <div class="precio-postre">$120 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="pay">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="pan"
+             data-galeria="imagenes/pandebarrasemiintegral1.webp,imagenes/pandebarrasemiintegral2.webp">
             <div class="contenedor-img">
-                <img src="imagenes/pay-de-queso-con-grosellas-1.webp" alt="Tartaleta">
+                <img src="imagenes/pandebarrasemiintegral1.webp" alt="Pan de barra semi integral">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">pay</div>
-                <h3 class="titulo-postre">Pay de Queso con Grosellas</h3>
-                <p class="descripcion-breve">Pay de queso Artesanal con Grosellas.</p>
-                <div class="precio-postre">$200 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
-            </div>
-        </div>
-
-        <div class="tarjeta-postre" data-categoria="postres salados">
-            <div class="contenedor-img">
-                <img src="imagenes/roles-de-pepperoni-con-queso-cheddar-y-salsa-para-pizza-1.webp" alt="Pastel de Zanahoria">
-            </div>
-            <div class="info-postre">
-                <div class="categoria-etiqueta">postres salados</div>
-                <h3 class="titulo-postre">Roles de Pepperoni con Queso Cheddar y Salsa para Pizza</h3>
-                <p class="descripcion-breve">Roles de pepperoni con queso cheddar y salsa para pizza.</p>
+                <div class="categoria-etiqueta">Pan</div>
+                <h3 class="titulo-postre">Pan de barra semi integral</h3>
+                <p class="descripcion-breve">Pan de barra chic. Contiene harina blanca, harina integral, azúcar mascabado, aceite de oliva, agua y sal.</p>
                 <div class="precio-postre">$65 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="pasteles">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="masa-madre"
+             data-galeria="imagenes/pandebarrasemiintegral2-1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/pan-pizza-1.webp" alt="Cheesecake">
+                <img src="imagenes/pandebarrasemiintegral2-1.webp" alt="Pan de barra semi integral">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">pan condimentado</div>
-                <h3 class="titulo-postre">Pan condimentado tipo Pizza</h3>
-                <p class="descripcion-breve">Textura crujiente y deliciosa, condimentada al estilo de una pizza.</p>
-                <div class="precio-postre">$420 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Masa Madre</div>
+                <h3 class="titulo-postre">Pan de barra semi integral</h3>
+                <p class="descripcion-breve">Pan de harina de trigo blanca, harina integral, miel, aceite de oliva, agua, sal.</p>
+                <div class="precio-postre">$120 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="pasteles">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="reposteria"
+             data-galeria="imagenes/minibrownies1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/tres-leches.webp" alt="Pastel Tres Leches">
+                <img src="imagenes/minibrownies1.webp" alt="Mini brownies">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Pasteles</div>
-                <h3 class="titulo-postre">Tres Leches Vainilla-Cajeta</h3>
-                <p class="descripcion-breve">Bizcocho tradicional perfectamente humectado con nuestra receta secreta de tres leches, hilos de cajeta quemada y nuez.</p>
-                <div class="precio-postre">$360 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Repostería / Chocolate / Brownie</div>
+                <h3 class="titulo-postre">Mini brownies</h3>
+                <p class="descripcion-breve">Mini brownies de triple chocolate con trozos de chocolate semi amargo turin.</p>
+                <div class="precio-postre">$65 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="pasteles">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="galletas"
+             data-galeria="imagenes/besosdenuez1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/red-velvet.webp" alt="Pastel Red Velvet">
+                <img src="imagenes/besosdenuez1.webp" alt="Besos de nuez">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Pasteles</div>
-                <h3 class="titulo-postre">Red Velvet Clásico</h3>
-                <p class="descripcion-breve">Bizcocho aterciopelado con un sutil toque de cocoa orgánica, intercalado con capas sedosas de crema de queso premium.</p>
-                <div class="precio-postre">$400 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Galletas</div>
+                <h3 class="titulo-postre">Besos de nuez</h3>
+                <p class="descripcion-breve">Deliciosas galletas de nuez.</p>
+                <div class="precio-postre">$65 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="panaderia">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="galletas reposteria"
+             data-galeria="imagenes/biscotti1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/concha-vainilla.webp" alt="Concha Artesanal">
+                <img src="imagenes/biscotti1.webp" alt="Biscotti">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Pan Dulce</div>
-                <h3 class="titulo-postre">Concha Temática de Vainilla</h3>
-                <p class="descripcion-breve">Pan de huevo tradicional de textura esponjosa con una costra crujiente de mantequilla y vainilla natural de Papantla.</p>
-                <div class="precio-postre">$25 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Galletas · Repostería</div>
+                <h3 class="titulo-postre">Biscotti</h3>
+                <p class="descripcion-breve">Galleta de origen italiano con naranja, arándanos y chocolate blanco.</p>
+                <div class="precio-postre">$60 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="panaderia">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="reposteria saludable"
+             data-galeria="imagenes/minilembasladymonchis1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/chocolatin.webp" alt="Chocolatín">
+                <img src="imagenes/minilembasladymonchis1.webp" alt="Mini Lembas Lady Monchis">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Pan Dulce</div>
-                <h3 class="titulo-postre">Chocolatín de Hojaldre</h3>
-                <p class="descripcion-breve">Masa de hojaldre crujiente dorada a la perfección, rellena con barras de chocolate amargo belga horneado.</p>
-                <div class="precio-postre">$38 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Repostería · Saludable</div>
+                <h3 class="titulo-postre">Mini Lembas Lady Monchis</h3>
+                <p class="descripcion-breve">Bolitas de semillas: calabaza, girasol, chía, linaza, cacao, ajonjolí blanco, ajonjolí negro y dátil.</p>
+                <div class="precio-postre">$17 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="panaderia">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="galletas reposteria"
+             data-galeria="imagenes/kolachislimon1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/rol-canela.webp" alt="Rol de Canela">
+                <img src="imagenes/kolachislimon1.webp" alt="Kolachis limón">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Pan Dulce</div>
-                <h3 class="titulo-postre">Rol de Canela y Glaseado</h3>
-                <p class="descripcion-breve">Espiral de masa brioche suave, relleno de una mezcla aromática de canela de ceilán y azúcar mascabado, con glaseado real.</p>
+                <div class="categoria-etiqueta">Galletas · Repostería</div>
+                <h3 class="titulo-postre">Kolachis limón</h3>
+                <p class="descripcion-breve">Galletas de queso crema y crema de limón (lemon curd).</p>
+                <div class="precio-postre">$65 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="galletas reposteria"
+             data-galeria="imagenes/kolachisfrutosrojos1.webp">
+            <div class="contenedor-img">
+                <img src="imagenes/kolachisfrutosrojos1.webp" alt="Kolachis frutos rojos">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Galletas · Repostería</div>
+                <h3 class="titulo-postre">Kolachis frutos rojos</h3>
+                <p class="descripcion-breve">Galletas de queso crema con mermelada casera de frutos rojos.</p>
+                <div class="precio-postre">$55 MXN por 100g</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="galletas reposteria"
+             data-galeria="imagenes/galletanaranjaycardamomo1.webp">
+            <div class="contenedor-img">
+                <img src="imagenes/galletanaranjaycardamomo1.webp" alt="Galleta naranja y cardamomo">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Galletas · Repostería</div>
+                <h3 class="titulo-postre">Galleta naranja y cardamomo</h3>
+                <p class="descripcion-breve"></p>
                 <div class="precio-postre">$40 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="panaderia">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="masa-madre pan"
+             data-galeria="imagenes/pandebarrasemiintegralconsemillas1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/muffin-arandano.webp" alt="Muffin">
+                <img src="imagenes/pandebarrasemiintegralconsemillas1.webp" alt="Pan de barra semi integral con semillas">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Pan Dulce</div>
-                <h3 class="titulo-postre">Muffin de Arándano Orgánico</h3>
-                <p class="descripcion-breve">Panecillo suave y esponjoso repleto de arándanos azules frescos que estallan en el horneado, con un toque cítrico de limón.</p>
-                <div class="precio-postre">$30 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Masa Madre · Pan</div>
+                <h3 class="titulo-postre">Pan de barra semi integral con semillas</h3>
+                <p class="descripcion-breve">Pan de masa madre con semillas variadas de cubierta.</p>
+                <div class="precio-postre">$80 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="individuales">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="masa-madre pan"
+             data-galeria="imagenes/hogazacacaoydatil1.webp,imagenes/hogazadatil2.webp">
             <div class="contenedor-img">
-                <img src="imagenes/brownie-nuez.webp" alt="Brownie">
+                <img src="imagenes/hogazacacaoydatil1.webp" alt="Hogaza cacao y dátil">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Postres Individuales</div>
-                <h3 class="titulo-postre">Brownie Fudge con Nuez</h3>
-                <p class="descripcion-breve">Cuadro de chocolate espeso, meloso y súper húmedo por dentro, con costra crujiente y trozos de nuez pecana tostada.</p>
-                <div class="precio-postre">$35 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Masa Madre · Pan</div>
+                <h3 class="titulo-postre">Hogaza cacao y dátil</h3>
+                <p class="descripcion-breve">Harina blanca, harina integral, cacao, dátil, agua, sal.</p>
+                <div class="precio-postre">$110 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="individuales">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="salado antojitos"
+             data-galeria="imagenes/tamalesdecochinitapibil1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/macarons.webp" alt="Macarons">
+                <img src="imagenes/tamalesdecochinitapibil1.webp" alt="Tamales de cochinita pibil">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Postres Individuales</div>
-                <h3 class="titulo-postre">Trío de Macarons Franceses</h3>
-                <p class="descripcion-breve">Delicadas galletas de merengue de almendra con texturas crujientes por fuera y suaves por dentro, rellenas de ganache frutal.</p>
-                <div class="precio-postre">$75 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Salado · Antojitos</div>
+                <h3 class="titulo-postre">Tamales de cochinita pibil</h3>
+                <p class="descripcion-breve">Pedidos a partir de 5 piezas.</p>
+                <div class="precio-postre">$40 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="individuales">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="masa-madre pan"
+             data-galeria="imagenes/hogazaarandanosynaranja1.webp">
             <div class="contenedor-img">
-                <img src="imagenes/eclair-chocolate.webp" alt="Éclair">
+                <img src="imagenes/hogazaarandanosynaranja1.webp" alt="Hogaza arándanos y naranja">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Postres Individuales</div>
-                <h3 class="titulo-postre">Éclair de Crema Pastelera</h3>
-                <p class="descripcion-breve">Masa choux alargada y ligera, rellena con una sedosa crema de vainilla y cubierta con un espejo de chocolate brillante.</p>
-                <div class="precio-postre">$45 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Masa Madre · Pan</div>
+                <h3 class="titulo-postre">Hogaza arándanos y naranja</h3>
+                <p class="descripcion-breve">Hogaza de harina blanca, integral, arándanos y ralladura de naranja.</p>
+                <div class="precio-postre">$90 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
-        <div class="tarjeta-postre" data-categoria="individuales">
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="masa-madre pan salado"
+             data-galeria="imagenes/focaccia1.webp,imagenes/focaccia2.webp,imagenes/focaccia3.webp,imagenes/focaccia4.webp">
             <div class="contenedor-img">
-                <img src="imagenes/tiramisu-vasito.webp" alt="Tiramisú">
+                <img src="imagenes/focaccia1.webp" alt="Focaccia">
             </div>
             <div class="info-postre">
-                <div class="categoria-etiqueta">Postres Individuales</div>
-                <h3 class="titulo-postre">Porción de Tiramisú Italiano</h3>
-                <p class="descripcion-breve">Capas de soletas caseras humedecidas en café espresso y licor, alternadas con una rica crema de queso mascarpone y cocoa.</p>
-                <div class="precio-postre">$65 MXN</div>
-                <button class="btn-detalles">Ver ingredientes</button>
+                <div class="categoria-etiqueta">Masa Madre · Pan · Salado</div>
+                <h3 class="titulo-postre">Focaccia</h3>
+                <p class="descripcion-breve">Pan tradicional italiano, esponjoso a base de harina blanca, agua, sal y aceite de oliva. Puede incluir aceitunas y romero · tomate, ajo y albahaca · o ingredientes sugeridos.</p>
+                <div class="precio-postre">$120 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
             </div>
         </div>
 
+        <!-- =========================================================
+             PRODUCTO 16 — Rellena los datos y reemplaza los valores
+        ========================================================== -->
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="CATEGORIA"
+             data-galeria="imagenes/IMAGEN1.webp">
+            <div class="contenedor-img">
+                <img src="imagenes/IMAGEN1.webp" alt="Nombre del producto">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Categoría</div>
+                <h3 class="titulo-postre">Nombre del producto</h3>
+                <p class="descripcion-breve">Descripción del producto.</p>
+                <div class="precio-postre">$00 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             PRODUCTO 17
+        ========================================================== -->
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="CATEGORIA"
+             data-galeria="imagenes/IMAGEN1.webp">
+            <div class="contenedor-img">
+                <img src="imagenes/IMAGEN1.webp" alt="Nombre del producto">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Categoría</div>
+                <h3 class="titulo-postre">Nombre del producto</h3>
+                <p class="descripcion-breve">Descripción del producto.</p>
+                <div class="precio-postre">$00 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             PRODUCTO 18
+        ========================================================== -->
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="CATEGORIA"
+             data-galeria="imagenes/IMAGEN1.webp">
+            <div class="contenedor-img">
+                <img src="imagenes/IMAGEN1.webp" alt="Nombre del producto">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Categoría</div>
+                <h3 class="titulo-postre">Nombre del producto</h3>
+                <p class="descripcion-breve">Descripción del producto.</p>
+                <div class="precio-postre">$00 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             PRODUCTO 19
+        ========================================================== -->
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="CATEGORIA"
+             data-galeria="imagenes/IMAGEN1.webp">
+            <div class="contenedor-img">
+                <img src="imagenes/IMAGEN1.webp" alt="Nombre del producto">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Categoría</div>
+                <h3 class="titulo-postre">Nombre del producto</h3>
+                <p class="descripcion-breve">Descripción del producto.</p>
+                <div class="precio-postre">$00 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             PRODUCTO 20
+        ========================================================== -->
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="CATEGORIA"
+             data-galeria="imagenes/IMAGEN1.webp">
+            <div class="contenedor-img">
+                <img src="imagenes/IMAGEN1.webp" alt="Nombre del producto">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Categoría</div>
+                <h3 class="titulo-postre">Nombre del producto</h3>
+                <p class="descripcion-breve">Descripción del producto.</p>
+                <div class="precio-postre">$00 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             PRODUCTO 21
+        ========================================================== -->
+        <div class="tarjeta-postre tarjeta-clickeable" data-categorias="CATEGORIA"
+             data-galeria="imagenes/IMAGEN1.webp">
+            <div class="contenedor-img">
+                <img src="imagenes/IMAGEN1.webp" alt="Nombre del producto">
+            </div>
+            <div class="info-postre">
+                <div class="categoria-etiqueta">Categoría</div>
+                <h3 class="titulo-postre">Nombre del producto</h3>
+                <p class="descripcion-breve">Descripción del producto.</p>
+                <div class="precio-postre">$00 MXN</div>
+                <button class="btn-detalles btn-pedido">Haz tu pedido</button>
+            </div>
+        </div>
+
+    </div><!-- fin grid-reposteria -->
+    </div><!-- fin seccion-catalogo -->
+
+    <!-- ===== SECCIÓN: OFERTAS ===== -->
+    <div class="seccion-nav" id="seccion-ofertas">
+        <div class="aviso-vacio">
+            🏷️ Aquí aparecerán los productos en oferta. Próximamente.
+        </div>
     </div>
 
-    <footer>
+    <!-- ===== SECCIÓN: MÁS VENDIDOS ===== -->
+    <div class="seccion-nav" id="seccion-vendidos">
+        <div class="aviso-vacio">
+            ⭐ Aquí aparecerán los productos más vendidos. Próximamente.
+        </div>
+    </div>
         <p>&copy; 2026 Lluvia de Invierno - Diseñado por Yesos Polo Digital</p>
     </footer>
 
     <script>
-        // ===== BANNER: 4 IMÁGENES ALEATORIAS DEL CATÁLOGO =====
-        (function() {
-            const tarjetas = document.querySelectorAll('.tarjeta-postre');
-            const imagenes = [];
+        // ===== NAVEGACIÓN PRINCIPAL: Catálogo / Ofertas / Más Vendidos =====
+        const botonesNav = document.querySelectorAll('#nav-principal .btn-filtro');
+        const seccionCatalogo  = document.getElementById('seccion-catalogo');
+        const seccionOfertas   = document.getElementById('seccion-ofertas');
+        const seccionVendidos  = document.getElementById('seccion-vendidos');
+        const subfiltros       = document.getElementById('subfiltros-catalogo');
 
-            tarjetas.forEach(card => {
-                const img = card.querySelector('.contenedor-img img');
-                if (img && img.getAttribute('src')) {
-                    imagenes.push(img.getAttribute('src'));
+        botonesNav.forEach(btn => {
+            btn.addEventListener('click', () => {
+                botonesNav.forEach(b => b.classList.remove('activo'));
+                btn.classList.add('activo');
+                const nav = btn.getAttribute('data-nav');
+                seccionCatalogo.classList.remove('visible');
+                seccionOfertas.classList.remove('visible');
+                seccionVendidos.classList.remove('visible');
+                subfiltros.style.display = 'none';
+                if (nav === 'catalogo') {
+                    seccionCatalogo.classList.add('visible');
+                    subfiltros.style.display = 'block';
+                } else if (nav === 'ofertas') {
+                    seccionOfertas.classList.add('visible');
+                } else if (nav === 'vendidos') {
+                    seccionVendidos.classList.add('visible');
                 }
             });
+        });
+        subfiltros.style.display = 'block';
 
-            // Mezcla aleatoria (Fisher-Yates)
-            for (let i = imagenes.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [imagenes[i], imagenes[j]] = [imagenes[j], imagenes[i]];
-            }
-
-            // Llena los 4 slots
-            const slots = document.querySelectorAll('.banner-slot');
-            slots.forEach((slot, index) => {
-                const img = document.createElement('img');
-                img.src = imagenes[index % imagenes.length];
-                img.alt = 'Producto ' + (index + 1);
-                slot.appendChild(img);
-            });
-        })();
-
-        // ===== FILTROS =====
-        const botonesFiltro = document.querySelectorAll('.btn-filtro');
+        // ===== SUBFILTROS DEL CATÁLOGO =====
+        const botonesSubfiltro = document.querySelectorAll('.btn-subfiltro');
         const tarjetas = document.querySelectorAll('.tarjeta-postre');
 
-        botonesFiltro.forEach(boton => {
+        botonesSubfiltro.forEach(boton => {
             boton.addEventListener('click', () => {
-                document.querySelector('.btn-filtro.activo').classList.remove('activo');
+                botonesSubfiltro.forEach(b => b.classList.remove('activo'));
                 boton.classList.add('activo');
-
-                const categoriaSeleccionada = boton.getAttribute('data-categoria');
-
+                const sub = boton.getAttribute('data-subcategoria');
                 tarjetas.forEach(tarjeta => {
-                    const catTarjeta = tarjeta.getAttribute('data-categoria');
-
-                    if (categoriaSeleccionada === 'todos' || catTarjeta === categoriaSeleccionada) {
+                    // Soporta tanto data-categorias (múltiples) como data-categoria (legacy)
+                    const cats = (tarjeta.getAttribute('data-categorias') || tarjeta.getAttribute('data-categoria') || '').split(/\s+/);
+                    if (sub === 'todos' || cats.includes(sub)) {
                         tarjeta.classList.remove('oculto');
                     } else {
                         tarjeta.classList.add('oculto');
@@ -845,53 +1360,172 @@
             });
         });
 
-        // ===== MODAL DE GALERÍA =====
-        const overlay    = document.getElementById('modal-overlay');
-        const btnCerrar  = document.getElementById('modal-cerrar');
-        const galeria    = document.getElementById('modal-galeria');
-        const mCategoria = document.getElementById('modal-categoria');
-        const mTitulo    = document.getElementById('modal-titulo');
-        const mDesc      = document.getElementById('modal-descripcion');
-        const mPrecio    = document.getElementById('modal-precio');
+        // ===== MODAL DE PEDIDO / WHATSAPP =====
+        const pedidoOverlay = document.getElementById('modal-pedido-overlay');
+        const pedidoCerrar  = document.getElementById('modal-pedido-cerrar');
+        const pedidoGaleria = document.getElementById('modal-pedido-galeria');
+        const galeriaDots   = document.getElementById('galeria-dots');
+        const galeriaNext   = document.getElementById('galeria-next');
+        const galeriaPrev   = document.getElementById('galeria-prev');
+        const pedidoNombre  = document.getElementById('modal-pedido-nombre');
+        const btnWaLink     = document.getElementById('btn-wa-link');
+        const WHATSAPP_NUM  = '524434949979';
 
-        document.querySelectorAll('.btn-modal').forEach(btn => {
-            btn.addEventListener('click', () => {
+        let galeriaImagenes = []; // array de srcs de la galería activa
+
+        function actualizarDots(indice) {
+            galeriaDots.querySelectorAll('.galeria-dot').forEach((dot, i) => {
+                dot.classList.toggle('activo', i === indice);
+            });
+            // Mostrar/ocultar flechas
+            galeriaPrev.classList.toggle('oculta', indice === 0);
+            galeriaNext.classList.toggle('oculta', indice === galeriaImagenes.length - 1);
+        }
+
+        function irAImagen(indice) {
+            const ancho = pedidoGaleria.offsetWidth;
+            pedidoGaleria.scrollTo({ left: ancho * indice, behavior: 'smooth' });
+            actualizarDots(indice);
+        }
+
+        function indiceActual() {
+            const ancho = pedidoGaleria.offsetWidth || 1;
+            return Math.round(pedidoGaleria.scrollLeft / ancho);
+        }
+
+        // Scroll → actualizar dots al deslizar con el dedo / mouse
+        pedidoGaleria.addEventListener('scroll', () => {
+            actualizarDots(indiceActual());
+        }, { passive: true });
+
+        galeriaNext.addEventListener('click', () => irAImagen(indiceActual() + 1));
+        galeriaPrev.addEventListener('click', () => irAImagen(indiceActual() - 1));
+
+        function abrirModalPedido(card) {
+            const imgEl  = card.querySelector('.contenedor-img img');
+            const titulo = card.querySelector('.titulo-postre');
+            const precio = card.querySelector('.precio-postre');
+
+            // Construir galería: usar data-galeria si existe, si no la imagen principal
+            pedidoGaleria.innerHTML = '';
+            galeriaDots.innerHTML   = '';
+            const galeriaData = card.getAttribute('data-galeria');
+            galeriaImagenes = [];
+            if (galeriaData) {
+                galeriaImagenes = galeriaData.split(',').map(s => s.trim()).filter(Boolean);
+            } else if (imgEl && imgEl.getAttribute('src')) {
+                galeriaImagenes = [imgEl.getAttribute('src')];
+            }
+
+            const nombreProducto = titulo ? titulo.textContent.trim() : 'Producto';
+            galeriaImagenes.forEach((src, i) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = nombreProducto + (galeriaImagenes.length > 1 ? ` — foto ${i+1}` : '');
+                pedidoGaleria.appendChild(img);
+
+                // Crear dot
+                const dot = document.createElement('button');
+                dot.className = 'galeria-dot' + (i === 0 ? ' activo' : '');
+                dot.setAttribute('aria-label', `Ver foto ${i+1}`);
+                dot.addEventListener('click', () => irAImagen(i));
+                galeriaDots.appendChild(dot);
+            });
+
+            // Mostrar dots y flechas solo si hay más de 1 imagen
+            galeriaDots.style.display = galeriaImagenes.length > 1 ? 'flex' : 'none';
+            galeriaPrev.classList.add('oculta');
+            galeriaNext.classList.toggle('oculta', galeriaImagenes.length <= 1);
+
+            // Nombre del producto
+            const nombre = nombreProducto;
+            const precioTexto = precio ? precio.textContent.trim() : '';
+            pedidoNombre.textContent = nombre;
+
+            // Mensaje pre-llenado para WhatsApp
+            const msg = encodeURIComponent(`¡Hola! Me interesa hacer un pedido de: ${nombre}${precioTexto ? ' (' + precioTexto + ')' : ''}. ¿Me pueden dar más información?`);
+            btnWaLink.href = `https://wa.me/${WHATSAPP_NUM}?text=${msg}`;
+
+            pedidoOverlay.classList.add('abierto');
+            document.body.style.overflow = 'hidden';
+            pedidoGaleria.scrollLeft = 0;
+        }
+
+        // Botones "Haz tu pedido" individuales
+        document.querySelectorAll('.btn-pedido').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const card = btn.closest('.tarjeta-postre');
-                const imgs = JSON.parse(card.getAttribute('data-modal-imgs') || '[]');
-
-                // Rellenar galería
-                galeria.innerHTML = '';
-                if (imgs.length === 0) {
-                    galeria.innerHTML = '<div style="width:100%;display:flex;align-items:center;justify-content:center;color:#bfa38f;font-size:13px;">Sin imágenes</div>';
-                } else {
-                    imgs.forEach(src => {
-                        const img = document.createElement('img');
-                        img.src = src;
-                        img.alt = card.getAttribute('data-modal-titulo') || '';
-                        galeria.appendChild(img);
-                    });
-                }
-                galeria.scrollLeft = 0;
-
-                // Rellenar texto
-                mCategoria.textContent = card.getAttribute('data-modal-categoria') || '';
-                mTitulo.textContent    = card.getAttribute('data-modal-titulo') || '';
-                mDesc.textContent      = card.getAttribute('data-modal-desc') || '';
-                mPrecio.innerHTML      = card.getAttribute('data-modal-precio') || '';
-
-                overlay.classList.add('abierto');
-                document.body.style.overflow = 'hidden';
+                abrirModalPedido(card);
             });
         });
 
-        function cerrarModal() {
-            overlay.classList.remove('abierto');
+        // Tarjetas completas clickeables
+        document.querySelectorAll('.tarjeta-clickeable').forEach(card => {
+            card.addEventListener('click', () => {
+                abrirModalPedido(card);
+            });
+        });
+
+        function cerrarPedidoModal() {
+            pedidoOverlay.classList.remove('abierto');
             document.body.style.overflow = '';
         }
 
-        btnCerrar.addEventListener('click', cerrarModal);
-        overlay.addEventListener('click', e => { if (e.target === overlay) cerrarModal(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+        pedidoCerrar.addEventListener('click', cerrarPedidoModal);
+        pedidoOverlay.addEventListener('click', e => { if (e.target === pedidoOverlay) cerrarPedidoModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarPedidoModal(); });
+
+        // ===== MODAL FOTO AMPLIADA (MENÚ MASA MADRE) =====
+        const fotoOverlay = document.getElementById('modal-foto-overlay');
+        const fotoCerrar  = document.getElementById('modal-foto-cerrar');
+
+        document.getElementById('btn-foto-menu').addEventListener('click', () => {
+            fotoOverlay.classList.add('abierto');
+            document.body.style.overflow = 'hidden';
+        });
+
+        function cerrarFotoModal() {
+            fotoOverlay.classList.remove('abierto');
+            document.body.style.overflow = '';
+        }
+
+        fotoCerrar.addEventListener('click', cerrarFotoModal);
+        fotoOverlay.addEventListener('click', e => { if (e.target === fotoOverlay) cerrarFotoModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarFotoModal(); });
+
+        // ===== HOTSPOTS DEL MENÚ =====
+        document.querySelectorAll('.hotspot').forEach(spot => {
+            spot.addEventListener('click', e => {
+                e.stopPropagation();
+                const nombre    = spot.getAttribute('data-producto');
+                const precio    = spot.getAttribute('data-precio');
+                const imgSrc    = spot.getAttribute('data-img');
+
+                // Galería de una sola imagen
+                pedidoGaleria.innerHTML = '';
+                galeriaDots.innerHTML   = '';
+                galeriaImagenes = [imgSrc];
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.alt = nombre;
+                pedidoGaleria.appendChild(img);
+                galeriaDots.style.display = 'none';
+                galeriaPrev.classList.add('oculta');
+                galeriaNext.classList.add('oculta');
+
+                pedidoNombre.textContent = nombre;
+                const msg = encodeURIComponent(
+                    `¡Hola! Me interesa hacer un pedido de: ${nombre} (${precio}). ¿Me pueden dar más información?`
+                );
+                btnWaLink.href = `https://wa.me/${WHATSAPP_NUM}?text=${msg}`;
+
+                cerrarFotoModal();
+                pedidoOverlay.classList.add('abierto');
+                document.body.style.overflow = 'hidden';
+                pedidoGaleria.scrollLeft = 0;
+            });
+        });
     </script>
 
 </body>
